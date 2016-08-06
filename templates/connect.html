@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/sb-admin-2.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/timeline.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/metisMenu/dist/metisMenu.min.css') }}">
+    <title>Title</title>
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Zookeeper browser</a>
+        </div>
+    </nav>
+    {% if connection_error %}
+    <div class="alert alert-danger">
+        <h5>{{ connection_error }}</h5>
+    </div>
+    {% endif %}
+    <div class="row">
+
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            <form action="{{ url_for('connect') }}" method=post>
+                <div class="form-group">
+
+                    <label for="inputConStr">Input connection string</label>
+                    <input type="text" class="form-control" id="inputConStr" placeholder="127.0.0.1:2181" name="inputConStr">
+
+                </div>
+                <button type="submit" class="btn btn-default">Connect</button>
+            </form>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+</div>
+
+</body>
+</html>

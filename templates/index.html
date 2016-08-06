@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/sb-admin-2.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/timeline.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/metisMenu/dist/metisMenu.min.css') }}">
+    <title>Zookeeper browser by Mijalko</title>
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Zookeeper browser</a>
+        </div>
+    </nav>
+    <div class="row well">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8">
+            {#            create path#}
+            {% for path_element in path_parts %}
+                <label> > </label>
+                <a href="{{ path_element[1] }}">{{ path_element[0] }}</a>
+            {% endfor %}
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1"></div>
+
+        <div class="col-lg-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Children</div>
+                <div class="panel-body">
+                    {% for child in children %}
+                        <a href="{{ child[1] }}">{{ child[0] }}, </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Node properties</div>
+                <div class="panel-body">
+                    <table class="table-striped">
+                        {% for d in node_properties %}
+                            <tr>
+                                <td>{{ d[0] }}</td>
+                                <td>{{ d[1] }}</td>
+                            </tr>
+                        {% endfor %}
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Node data</div>
+                <div class="panel-body">
+                    <textarea class="form-control" rows="5" id="comment">{{ data }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
+</div>
+</div>
+
+</body>
+</html>
