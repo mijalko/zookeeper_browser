@@ -34,13 +34,17 @@ def index():
             del session["connection_string"]
         return redirect(url_for("connect"))
     try:
-
         # build path element
         path = request.args.get('path', "/")
         path_elements = path.split("/")
         current_path = "/"
         path_parts = []
         path_parts.append(("/", url_for("index", path="/")))
+
+        if request.method == 'POST':
+            if request.form['submit'] == "update":
+                node_val = request.form.get('node_val', None)
+                zk.set(path, node_val.encode('ascii', 'replace'))
 
         first = True
         for p in path_elements:
@@ -73,7 +77,7 @@ def index():
         node_properties.append(("children_count", node_data[1].children_count))
 
 
-        return render_template('index.html', path_parts=path_parts, children=children_path, node_properties=node_properties, data=node_data[0])
+        return render_template('index.html', path_parts=path_parts, children=children_path, node_properties=node_properties, data=node_data[0], path=path)
     finally:
         zk.stop()
         zk.close()
