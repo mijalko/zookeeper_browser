@@ -42,9 +42,18 @@ def index():
         path_parts.append(("/", url_for("index", path="/")))
 
         if request.method == 'POST':
-            if request.form['submit'] == "update":
+            if "submitbtn" in request.form and request.form['submitbtn'] == "update":
                 node_val = request.form.get('node_val', None)
                 zk.set(path, node_val.encode('ascii', 'replace'))
+            elif request.form["submitDocUpdate"] == "Delete" and path.strip() != '/':
+                zk.delete(path, recursive=True)
+                # change path to parent
+                path = path[:path.rfind('/')]
+                path_elements = path.split("/")
+            elif request.form["submitDocUpdate"] == "Add":
+                zk.ensure_path(path.rstrip('/') + "/" + request.form["node_name"])
+                # change path to parent
+                
 
         first = True
         for p in path_elements:

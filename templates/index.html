@@ -7,10 +7,28 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/metisMenu/dist/metisMenu.min.css') }}">
     <title>Zookeeper browser by Mijalko</title>
+    <script>
+        function OnDelClickHandler() {
+            if(confirm("Are sure you want to delete element")) {
+               document.getElementById('submitValue').setAttribute('value', "Delete");
+               document.getElementById('frmId').submit();
+           }
+        }
+
+        function OnAddClickHandler() {
+            var node_name = prompt("Please enter the name of the node");
+            if (node_name != null)
+               document.getElementById('submitValue').setAttribute('value', "Add");
+               document.getElementById('node_name').setAttribute('value', node_name);
+               document.getElementById('frmId').submit();
+
+        }
+
+</script>
 </head>
 <body>
 <div id="wrapper">
-    <form action="{{ url_for('index', path=path) }}" method=post>
+    <form action="{{ url_for('index', path=path) }}" id="frmId" method=post>
         <nav class="navbar navbar-default navbar-static-top" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">Zookeeper browser</a>
@@ -68,9 +86,11 @@
         <div class="col-lg-1"></div>
         <div class="row">
             <div class="col-lg-12 text-center">
-                <button type="button" class="btn btn-primary" name="submit" value="delete">Delete</button>
-                <button type="submit" class="btn btn-primary" name="submit" value="update">Update Data</button>
-                <button type="button" class="btn btn-primary" name="submit" value="add">Add new child</button>
+                <button type="button" class="btn btn-primary" name="submitbtn" value="delete" id="delBtn" onclick="OnDelClickHandler()">Delete</button>
+                <button type="submit" class="btn btn-primary" name="submitbtn" value="update">Update Data</button>
+                <button type="button" class="btn btn-primary" name="submitbtn" value="add" onclick="OnAddClickHandler()">Add new child</button>
+                <input type="hidden" name="submitDocUpdate" value="Save" id="submitValue"/>
+                <input type="hidden" name="node_name" value="" id="node_name"/>
             </div>
         </div>
     </form>
