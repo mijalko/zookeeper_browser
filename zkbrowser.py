@@ -35,33 +35,34 @@ def index():
         return redirect(url_for("connect"))
     try:
         # build path element
-        path = request.args.get('path', "/")
+        path = request.args.get('path', "")
         path_elements = path.split("/")
-        current_path = "/"
+
         path_parts = []
-        path_parts.append(("/", url_for("index", path="/")))
+        path_parts.append(("/", url_for("index")))
 
         if request.method == 'POST':
             if "submitbtn" in request.form and request.form['submitbtn'] == "update":
                 node_val = request.form.get('node_val', None)
                 zk.set(path, node_val.encode('ascii', 'replace'))
-            elif request.form["submitDocUpdate"] == "Delete" and path.strip() != '/':
-                zk.delete(path, recursive=True)
+            elif request.form["submitDocUpdate"] == "Delete" and path.strip() != '':
+                path = path.rstrip('/')
+                zk.delete("/" + path, recursive=True)
                 # change path to parent
                 path = path[:path.rfind('/')]
-                path_elements = path.split("/")
-            elif request.form["submitDocUpdate"] == "Add":
-                zk.ensure_path(path.rstrip('/') + "/" + request.form["node_name"])
-                # change path to parent
-                
 
-        first = True
+                return redirect(url_for("index", path=path))
+            elif request.form["submitDocUpdate"] == "Add":
+                zk.ensure_path("/" + path.rstrip('/') + "/" + request.form["node_name"])
+                # change path to parent
+
+        current_path = ""
+
         for p in path_elements:
             if p == "":
                 continue
-            if first:
+            if len(current_path) == 0:
                 current_path += p
-                first = False
             else:
                 current_path += "/" + p
             path_parts.append((p, url_for("index", path=current_path)))
@@ -70,7 +71,10 @@ def index():
         children = zk.get_children(path)
         children_path = []
         for child in children:
-            children_path.append((child, url_for("index", path=path + "/" + child)))
+            if len(path) > 0:
+                children_path.append((child, url_for("index", path=path + "/" + child)))
+            else:
+                children_path.append((child, url_for("index", path=child)))
 
         # current path data
         node_data = zk.get(path)
@@ -84,7 +88,6 @@ def index():
         node_properties.append(("owner_session_id", node_data[1].owner_session_id))
         node_properties.append(("data_length", node_data[1].data_length))
         node_properties.append(("children_count", node_data[1].children_count))
-
 
         return render_template('index.html', path_parts=path_parts, children=children_path, node_properties=node_properties, data=node_data[0], path=path)
     finally:
