@@ -9,7 +9,6 @@ import datetime
 
 from kazoo.client import KazooClient
 
-
 app = Flask(__name__)
 app.secret_key = 'my secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -125,7 +124,5 @@ def connect():
 
 
 if __name__ == '__main__':
-
-
-    app.debug = True
+    #app.debug = True
     app.run(host='0.0.0.0', port=4550)
