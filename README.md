@@ -6,7 +6,7 @@ This is python 2.7 web application for browswing zookeeper data. You can also ad
 
 # Installation
 
-## Set up virtural environment (fi you want)
+## Set up virtural environment (if you want)
 ```
 pip install vertualenv
 virtualenv vezk
