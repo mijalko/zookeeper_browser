@@ -15,7 +15,7 @@ app = Flask(__name__)
 app.secret_key = 'my secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 
-bp = Blueprint('zookeeper_browser', __name__, template_folder="templates")
+bp = Blueprint('zookeeper_browser', __name__, template_folder="templates", static_folder="static")
 
 
 
