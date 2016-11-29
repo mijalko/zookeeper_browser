@@ -8,6 +8,7 @@ from flask import Blueprint
 import collections
 import datetime
 import sys
+import os
 
 from kazoo.client import KazooClient
 
@@ -129,7 +130,7 @@ def connect():
 
 if __name__ == '__main__':
     #app.debug = True
-    prefix = "/"
+    prefix = os.environ.get("BASE_URL", "/")
     if len(sys.argv) > 1:
 	    prefix=sys.argv[1]
 
