@@ -4,8 +4,11 @@ from flask import url_for
 from flask import request
 from flask import session
 from flask import redirect
+from flask import Blueprint
 import collections
 import datetime
+import sys
+import os
 
 from kazoo.client import KazooClient
 
@@ -14,11 +17,14 @@ app.secret_key = 'my secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 defaultZK = os.environ.get("ZOOKEEPER_SERVERS", "127.0.0.1:2181")
 
+bp = Blueprint('zookeeper_browser', __name__, template_folder="templates", static_folder="static")
 
-@app.route('/', methods=["GET", "POST"])
+
+
+@bp.route('/', methods=["GET", "POST"])
 def index():
     if "connection_string" not in session or not session["connection_string"]:
-        return redirect(url_for("connect"))
+        return redirect(url_for("zookeeper_browser.connect"))
 
     connection_string = session["connection_string"]
 
@@ -32,14 +38,14 @@ def index():
         connection_error = "Cannot connect to zookeeoer. {}".format(str(ex))
         if "connection_string" in session:
             del session["connection_string"]
-        return redirect(url_for("connect"))
+        return redirect(url_for("zookeeper_browser.connect"))
     try:
         # build path element
         path = request.args.get('path', "")
         path_elements = path.split("/")
 
         path_parts = []
-        path_parts.append(("/", url_for("index")))
+        path_parts.append(("/", url_for("zookeeper_browser.index")))
 
         if request.method == 'POST':
             if "submitbtn" in request.form and request.form['submitbtn'] == "update":
@@ -51,7 +57,7 @@ def index():
                 # change path to parent
                 path = path[:path.rfind('/')]
 
-                return redirect(url_for("index", path=path))
+                return redirect(url_for("zookeeper_browser.index", path=path))
             elif request.form["submitDocUpdate"] == "Add":
                 zk.ensure_path("/" + path.rstrip('/') + "/" + request.form["node_name"])
                 # change path to parent
@@ -65,16 +71,16 @@ def index():
                 current_path += p
             else:
                 current_path += "/" + p
-            path_parts.append((p, url_for("index", path=current_path)))
+            path_parts.append((p, url_for("zookeeper_browser.index", path=current_path)))
 
         # list children
         children = zk.get_children(path)
         children_path = []
         for child in children:
             if len(path) > 0:
-                children_path.append((child, url_for("index", path=path + "/" + child)))
+                children_path.append((child, url_for("zookeeper_browser.index", path=path + "/" + child)))
             else:
-                children_path.append((child, url_for("index", path=child)))
+                children_path.append((child, url_for("zookeeper_browser.index", path=child)))
 
         # current path data
         node_data = zk.get(path)
@@ -95,7 +101,7 @@ def index():
         zk.close()
 
 
-@app.route('/connect', methods=["GET", "POST"])
+@bp.route('/connect', methods=["GET", "POST"])
 def connect():
     connection_error = None
     connection_string = None
@@ -119,11 +125,15 @@ def connect():
 
         if connected:
             # redirect to index
-            return redirect(url_for('index'))
+            return redirect(url_for('zookeeper_browser.index'))
 
     return render_template('connect.html', connection_error=connection_error, defaultZK=defaultZK)
 
-
 if __name__ == '__main__':
     #app.debug = True
+    prefix = os.environ.get("BASE_URL", "/")
+    if len(sys.argv) > 1:
+	    prefix=sys.argv[1]
+
+    app.register_blueprint(bp, url_prefix=prefix)
     app.run(host='0.0.0.0', port=4550)

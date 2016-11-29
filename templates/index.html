@@ -2,10 +2,10 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/sb-admin-2.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/timeline.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/metisMenu/dist/metisMenu.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='dist/css/sb-admin-2.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='dist/css/timeline.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='bower_components/metisMenu/dist/metisMenu.min.css') }}">
     <title>Zookeeper browser by Mijalko</title>
     <script>
         function OnDelClickHandler() {
@@ -28,7 +28,7 @@
 </head>
 <body>
 <div id="wrapper">
-    <form action="{{ url_for('index', path=path) }}" id="frmId" method=post>
+    <form action="{{ url_for('zookeeper_browser.index', path=path) }}" id="frmId" method=post>
         <nav class="navbar navbar-default navbar-static-top" role="navigation">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/">Zookeeper browser</a>

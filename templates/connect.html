@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/sb-admin-2.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='dist/css/timeline.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bower_components/metisMenu/dist/metisMenu.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='dist/css/sb-admin-2.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='dist/css/timeline.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('zookeeper_browser.static', filename='bower_components/metisMenu/dist/metisMenu.min.css') }}">
     <title>Title</title>
 </head>
 <body>
@@ -24,7 +24,7 @@
 
         <div class="col-lg-2"></div>
         <div class="col-lg-8">
-            <form action="{{ url_for('connect') }}" method=post>
+            <form action="{{ url_for('zookeeper_browser.connect') }}" method=post>
                 <div class="form-group">
 
                     <label for="inputConStr">Input connection string</label>
