@@ -20,7 +20,6 @@ defaultZK = os.environ.get("ZOOKEEPER_SERVERS", "127.0.0.1:2181")
 bp = Blueprint('zookeeper_browser', __name__, template_folder="templates", static_folder="static")
 
 
-
 @bp.route('/', methods=["GET", "POST"])
 def index():
     if "connection_string" not in session or not session["connection_string"]:
@@ -101,7 +100,7 @@ def index():
         zk.close()
 
 
-@bp.route('/connect', methods=["GET", "POST"])
+@bp.route('connect', methods=["GET", "POST"])
 def connect():
     connection_error = None
     connection_string = None
@@ -130,10 +129,10 @@ def connect():
     return render_template('connect.html', connection_error=connection_error, defaultZK=defaultZK)
 
 if __name__ == '__main__':
-    #app.debug = True
+    app.debug = True
     prefix = os.environ.get("BASE_URL", "/")
     if len(sys.argv) > 1:
-	    prefix=sys.argv[1]
+        prefix = sys.argv[1]
 
     app.register_blueprint(bp, url_prefix=prefix)
     app.run(host='0.0.0.0', port=4550)
