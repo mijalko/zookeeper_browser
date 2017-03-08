@@ -1,7 +1,7 @@
 # zookeeper browser
 - GUI for zookeeper writtten in python 
 
-This is python 2.7 web application for browswing zookeeper data. You can also add new nodes, delete nodes, and change node data.
+This is python 2.7 web application for browsing zookeeper data. You can also add new nodes, delete nodes, and change node data.
 ![image](/zkbrowser.png?raw=true "Zookeeper browser")
 
 # Installation
